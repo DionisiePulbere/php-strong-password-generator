@@ -1,19 +1,13 @@
 <?php 
-$passlen = isset($_GET['passlen']) ? intval($_GET['passlen']) : '';
+require_once __DIR__ . "/functions.php";
+
+$passlen = isset($_GET['passlen']) ? intval($_GET['passlen']) : "";
 var_dump($passlen);
 
-function generatePassword($passlen){
-$caract="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_?*+&%!#@()[]{}^/£∂-";
-$lenCaract=strlen($caract);
-
-$passRand = "";
-$i = 0;
-while ($i < $passlen){
-    $numRand = rand(0, $lenCaract - 1);
-    $passRand.= $caract[$numRand];
-    $i++;
-}
-return $passRand;
+if($passlen !== "") {
+    session_start();
+    $_SESSION["pass"] = generatePassword($passlen);
+    header("Location: ./pass.php");
 }
 
 ?>
@@ -32,10 +26,8 @@ return $passRand;
             <label for="passleng">Lunghezza della Password desiderata: </label>
             <input class="mx-4" type="number" name="passlen" id="passlen" >
             <button class="btn btn-primary" type="submit">Genera</button>
-            <button class="btn btn-secondry ms-2" type="reset">Reset</button>
+            <!-- <button class="btn btn-secondry ms-2" type="reset">Reset</button> -->
         </div>
     </form>
-    
-    <div class="container" > La tua nuova password è: <span class="text-danger"><?php echo generatePassword($passlen) ?></span></div>
 </body>
 </html>
